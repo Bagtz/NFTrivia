@@ -3,10 +3,10 @@
 </div>
 <br>
 <div align="center">
-    <i>An Typescript example using Cartesi Cli, Nonodo and Deroll as High-Level Framework</i>
+    <i>Um exemplo em Typescript usando Cartesi Cli, Nonodo e Deroll como frameworks de alto nível</i>
 </div>
 <div align="center">
-<b>This example aims to demonstrate the lifecycle of a DApp using Deroll.</b>
+<b>Este exemplo tem como objetivo demonstrar o ciclo de vida de um DApp usando Deroll.</b>
 </div>
 <br>
 <div align="center">
@@ -20,25 +20,25 @@
   <a href="">[![Static Badge](https://img.shields.io/badge/foundry-0.2.0-red)](https://book.getfoundry.sh/getting-started/installation)</a>
 </div>
 
-## User Stories:
+## Histórias de Usuário:
 
-Here is a list of user stories that the application covers:
+Aqui está uma lista de histórias de usuário que a aplicação cobre:
 
-| #   | User Story Description                                                                                     |
-| --- | ---------------------------------------------------------------------------------------------------------- |
-| 1   | As a user, I want to send Ether tokens to my wallet on Layer 2.                                           |
-| 2   | As a user, I want to send ERC20 tokens to my wallet on Layer 2.                                           |
-| 3   | As a user, I want to transfer Ether tokens between wallets on Layer 2.                                    |
-| 4   | As a user, I want to transfer ERC20 tokens between wallets on Layer 2.                                    |
-| 5   | As a user, I want to withdraw my deposit in ERC20.                                                         |
-| 6   | As a user, I want to withdraw my deposit in Ether.                                                         |
-| 7   | As a user, I want to request the balance of Ether in my wallet on Layer 2.                                |
-| 8   | As a user, I want to request the balance of ERC20 tokens in my wallet on Layer 2.                         |
+| #   | Descrição da História de Usuário                                                                         |
+| --- | -------------------------------------------------------------------------------------------------------- |
+| 1   | Como usuário, quero enviar tokens Ether para minha carteira na Layer 2.                                  |
+| 2   | Como usuário, quero enviar tokens ERC20 para minha carteira na Layer 2.                                  |
+| 3   | Como usuário, quero transferir tokens Ether entre carteiras na Layer 2.                                  |
+| 4   | Como usuário, quero transferir tokens ERC20 entre carteiras na Layer 2.                                  |
+| 5   | Como usuário, quero retirar meu depósito em ERC20.                                                       |
+| 6   | Como usuário, quero retirar meu depósito em Ether.                                                       |
+| 7   | Como usuário, quero solicitar o saldo de Ether na minha carteira na Layer 2.                             |
+| 8   | Como usuário, quero solicitar o saldo de tokens ERC20 na minha carteira na Layer 2.                      |
 
-## Setup:
+## Configuração:
 
-#### The system setup is divided into three parts:
-1º - Install all dependencies:
+#### A configuração do sistema é dividida em três partes:
+1º - Instale todas as dependências:
    + Cartesi Cli:
    ```bash
    $ npm i -g @cartesi/cli
@@ -48,30 +48,30 @@ Here is a list of user stories that the application covers:
    $ npm i nonodo
    ```
 
-2º - Clone this repo using the code below:
+2º - Clone este repositório usando o código abaixo:
 ```Bash
 git clone --recursive https://github.com/Mugen-Builders/learn-deroll.git
 ```
 
-## Interactions:
+## Interações:
 
-Below are the instructions on how to interact with each section of the application, and some metadata of the performed operation. 
+Abaixo estão as instruções sobre como interagir com cada seção da aplicação e alguns metadados das operações realizadas.
 
-#### Send native tokens:
+#### Enviar tokens nativos:
 
-_User story number 1_
+_História de usuário número 1_
 
-_Required past interactions: No past interactions._
+_Interações anteriores necessárias: Nenhuma interação anterior._
 
-##### Step 1:
+##### Passo 1:
 
-###### Command:
+###### Comando:
 
 ```shell
 cartesi send ether --amount=1000
 ```
 
-###### Output Similar to:
+###### Saída similar a:
 
 ```shell
 ? Chain Foundry
@@ -84,26 +84,26 @@ cartesi send ether --amount=1000
 ```
 
 > [!NOTE]
-> - Request Type: Advance State
-> - Contract Name: EtherPortal
-> - Contract Function: "depositEther(address app, bytes calldata execLayerData)"
-> - Contract Address: 0xFfdbe43d4c855BF7e0f105c400A50857f53AB044
+> - Tipo de Solicitação: Avançar Estado
+> - Nome do Contrato: EtherPortal
+> - Função do Contrato: "depositEther(address app, bytes calldata execLayerData)"
+> - Endereço do Contrato: 0xFfdbe43d4c855BF7e0f105c400A50857f53AB044
 
-#### Balance of native tokens:
+#### Saldo de tokens nativos:
 
-_User story number 7_
+_História de usuário número 7_
 
-_Required past interactions: Send native tokens._
+_Interações anteriores necessárias: Enviar tokens nativos._
 
-##### Step 1:
+##### Passo 1:
 
-###### Command:
+###### Comando:
 
 ```Bash
 curl http://localhost:8080/inspect/wallet/ether/0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
 ```
 
-###### Output Similar to:
+###### Saída similar a:
 
 ```json
 {
@@ -119,34 +119,34 @@ curl http://localhost:8080/inspect/wallet/ether/0xf39Fd6e51aad88F6F4ce6aB8827279
 ```
 
 > [!NOTE]
->  - Request Type: Inspect State
+>  - Tipo de Solicitação: Inspecionar Estado
 
-#### Transfer native tokens:
+#### Transferir tokens nativos:
 
-_User story number 3_
+_História de usuário número 3_
 
-_Required past interactions: Send native tokens._
+_Interações anteriores necessárias: Enviar tokens nativos._
 
-##### Step 1:
+##### Passo 1:
 
-###### Command:
+###### Comando:
 ```Bash
 cast calldata "transferEther(address,uint256)" 0x70997970C51812dc3A010C7d01b50e0d17dc79C8 100ether
 ```
 
-###### Output Similar to:
+###### Saída similar a:
 ```Bash
 0x05b1137b00000000000000000000000070997970c51812dc3a010c7d01b50e0d17dc79c80000000000000000000000000000000000000000000000056bc75e2d63100000
 ```
 
-##### Step 2:
+##### Passo 2:
 
-###### Command:
+###### Comando:
 ```Bash
 cartesi send generic --input=0x05b1137b00000000000000000000000070997970c51812dc3a010c7d01b50e0d17dc79c80000000000000000000000000000000000000000000000056bc75e2d63100000
 ```
 
-###### Output Similar to:
+###### Saída similar a:
 ```shell
 ? Chain Foundry
 ? RPC URL http://127.0.0.1:8545
@@ -157,15 +157,15 @@ cartesi send generic --input=0x05b1137b00000000000000000000000070997970c51812dc3
 ✔ Input sent: 0xfa798512c244eeee3743aba4ecefb3ba60b180dc8f6a8fbd86832905a3423938
 ```
   
-##### Evidence:
+##### Evidência:
 
-###### Command:
+###### Comando:
 
 ```Bash
 curl http://localhost:8080/inspect/wallet/ether/0x70997970C51812dc3A010C7d01b50e0d17dc79C8
 ```
 
-###### Output Similar to:
+###### Saída similar a:
 ```json
 {
    "status":"Accepted",
@@ -180,30 +180,32 @@ curl http://localhost:8080/inspect/wallet/ether/0x70997970C51812dc3A010C7d01b50e
 ```
 
 > [!NOTE]
->  - Request Type: Advance State
->  - Contract Name: InputBox
->  - Contract Function: "addInput(address app, bytes calldata payload)"
->  - Contract Address: 0x59b22D57D4f067708AB0c00552767405926dc768
+>  - Tipo de Solicitação: Avançar Estado
+>  - Nome do Contrato: InputBox
+>  - Função do Contrato: "addInput(address app, bytes calldata payload)"
+>  - Endereço do Contrato: 0x59b22D57D4f067708AB0c00552767405926dc768
 
-#### Withdraw native tokens:
+#### Retirar tokens nativos:
 
-_User story number 6_ 
+_História de usuário número 6_ 
 
-_Required past interactions: Send native tokens._
+_Interações anteriores necessárias: Enviar tokens nativos._
 
-##### Step 1:
+##### Passo 1:
 
-###### Command:
+###### Comando:
 
 ```Bash
 cartesi send dapp-address
 ```
 
-###### Output Similar to:
+###### Saída similar a:
 
 ```shell
 ? Chain Foundry
-? RPC URL http://127.0.0.1:8545
+? RPC URL http://127
+
+.0.0.1:8545
 ? Wallet Mnemonic
 ? Mnemonic test test test test test test test test test test test junk
 ? Account 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266 8999.968561869278177808 ETH
@@ -211,28 +213,28 @@ cartesi send dapp-address
 ✔ Input sent: 0x96d438d042aa539bf1f99d1055aa829e8bd1082fff8fcb5929c929abc0e8012c
 ```
 
-##### Step 2:
+##### Passo 2:
 
-###### Command:
+###### Comando:
 
 ```Bash
 cast calldata "withdrawEther(uint256)" 500ether
 ```
 
-###### Output Similar to:
+###### Saída similar a:
 
 ```Bash
 0x3bed33ce00000000000000000000000000000000000000000000001b1ae4d6e2ef500000
 ```
 
-##### Step 3:
+##### Passo 3:
 
-###### Command:
+###### Comando:
 ```Bash
 cartesi send generic --input=0x3bed33ce00000000000000000000000000000000000000000000001b1ae4d6e2ef500000
 ```
 
-###### Output Similar to:
+###### Saída similar a:
 ```Shell
 ? Chain Foundry
 ? RPC URL http://127.0.0.1:8545
@@ -243,14 +245,14 @@ cartesi send generic --input=0x3bed33ce00000000000000000000000000000000000000000
 ✔ Input sent: 0x758a7653c3429595a46ed0f5857d3c2fd106b67a0360677c2ace073f574a68fe
 ```
 
-##### Evidence:
+##### Evidência:
 
-###### Command:
+###### Comando:
 ```shell
 curl http://localhost:8080/inspect/wallet/ether/0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
 ```
 
-###### Output Similar to:
+###### Saída similar a:
 ```json
 {
    "status":"Accepted",
@@ -265,25 +267,25 @@ curl http://localhost:8080/inspect/wallet/ether/0xf39Fd6e51aad88F6F4ce6aB8827279
 ```
 
 > [!NOTE]
-> - Request Type: Advance State
-> - Contract Name: InputBox
-> - Contract Function: "addInput(address app, bytes calldata payload)"
-> - Contract Address: 0x59b22D57D4f067708AB0c00552767405926dc768
+> - Tipo de Solicitação: Avançar Estado
+> - Nome do Contrato: InputBox
+> - Função do Contrato: "addInput(address app, bytes calldata payload)"
+> - Endereço do Contrato: 0x59b22D57D4f067708AB0c00552767405926dc768
 
-#### Send Tokens ERC20:
+#### Enviar Tokens ERC20:
 
-_User story number 2_
+_História de usuário número 2_
 
-_Required past interactions: No past interactions._
+_Interações anteriores necessárias: Nenhuma interação anterior._
 
-##### Step 1:
+##### Passo 1:
 
-###### Command:
+###### Comando:
 ```Bash
 cast send 0x92C6bcA388E99d6B304f1Af3c3Cd749Ff0b591e2 "approve(address,uint256)" 0x9C21AEb2093C32DDbC53eEF24B873BDCd1aDa1DB 1000000000ether  --private-key 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80 --rpc-url http://localhost:8545
 ```
 
-###### Output Similar to:
+###### Saída similar a:
 ```Shell
 blockHash               0x0ad7ca64ebd3bae6de5146b46c2c31583760bea920afaa93c787f69b5c406729
 blockNumber             104
@@ -300,14 +302,14 @@ transactionIndex        0
 type                    2
 ```
 
-##### Step 2:
+##### Passo 2:
 
-###### Command:
+###### Comando:
 ```Bash
 cartesi send erc20
 ```
 
-###### Output Similar to:
+###### Saída similar a:
 ```Shell
 ? Chain Foundry
 ? RPC URL http://127.0.0.1:8545
@@ -320,25 +322,25 @@ cartesi send erc20
 ```
   
 > [!NOTE]
->  - Request Type: Advance State
->  - Contract Name: ERC20Portal
->  - Contract Function: "depositERC20Tokens(IERC20 token, address app, uint256 amount, bytes calldata execLayerData)"
->  - Contract Address: 0x9C21AEb2093C32DDbC53eEF24B873BDCd1aDa1DB
+>  - Tipo de Solicitação: Avançar Estado
+>  - Nome do Contrato: ERC20Portal
+>  - Função do Contrato: "depositERC20Tokens(IERC20 token, address app, uint256 amount, bytes calldata execLayerData)"
+>  - Endereço do Contrato: 0x9C21AEb2093C32DDbC53eEF24B873BDCd1aDa1DB
 
-#### Balance of ERC20 tokens:
+#### Saldo de tokens ERC20:
 
-_User story number 8_
+_História de usuário número 8_
 
-_Required past interactions: Send ERC20 tokens._
+_Interações anteriores necessárias: Enviar tokens ERC20._
 
-##### Step 1:
+##### Passo 1:
 
-###### Command:
+###### Comando:
 ```Bash
 curl http://localhost:8080/inspect/wallet/erc20/0x92C6bcA388E99d6B304f1Af3c3Cd749Ff0b591e2/0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
 ```
 
-###### Output Similar to:
+###### Saída similar a:
 ```Bash
 {
    "status":"Accepted",
@@ -353,34 +355,36 @@ curl http://localhost:8080/inspect/wallet/erc20/0x92C6bcA388E99d6B304f1Af3c3Cd74
 ```
 
 > [!NOTE]
->  - Request Type: Inspect State
+>  - Tipo de Solicitação: Inspecionar Estado
 
-#### Transfer tokens ERC20:
+#### Transferir tokens ERC20:
 
-_User story number 4_
+_História de usuário número 4_
 
-_Required past interactions: Send ERC20 tokens._
+_Interações anteriores necessárias: Enviar tokens ERC20._
 
-##### Step 1:
+##### Passo 1:
 
-###### Command:
+###### Comando:
 ```Bash
-cast calldata "transferERC20(address,address,uint256)" 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266 0x70997970C51812dc3A010C7d01b50e0d17dc79C8 10ether
+cast calldata "transferERC20(address,address
+
+,uint256)" 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266 0x70997970C51812dc3A010C7d01b50e0d17dc79C8 10ether
 ```
 
-###### Output Similar to:
+###### Saída similar a:
 ```Bash
 0x9db5dbe4000000000000000000000000f39Fd6e51aad88F6F4ce6aB8827279cffFb9226600000000000000000000000070997970c51812dc3a010c7d01b50e0d17dc79c80000000000000000000000000000000000000000000000008ac7230489e80000
 ```
 
-##### Step 2:
+##### Passo 2:
 
-###### Command:
+###### Comando:
 ```Shell
 cartesi send generic --input=0x9db5dbe4000000000000000000000000f39Fd6e51aad88F6F4ce6aB8827279cffFb9226600000000000000000000000070997970c51812dc3a010c7d01b50e0d17dc79c80000000000000000000000000000000000000000000000008ac7230489e80000
 ```
 
-###### Output Similar to:
+###### Saída similar a:
 ```Shell
 ? Chain Foundry
 ? RPC URL http://127.0.0.1:8545
@@ -391,14 +395,14 @@ cartesi send generic --input=0x9db5dbe4000000000000000000000000f39Fd6e51aad88F6F
 ✔ Input sent: 0xd49dc708491b48e6789e7dbc635474fa83fb19da2f7a6326a9cb5c4131fdd733`
 ```
 
-##### Evidence:
+##### Evidência:
 
-###### Command:
+###### Comando:
 ```Bash
 curl http://localhost:8080/inspect/wallet/erc20/0x92C6bcA388E99d6B304f1Af3c3Cd749Ff0b591e2/0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
 ```
 
-###### Output Similar to:
+###### Saída similar a:
 ```json
 {
    "status":"Accepted",
@@ -413,37 +417,37 @@ curl http://localhost:8080/inspect/wallet/erc20/0x92C6bcA388E99d6B304f1Af3c3Cd74
 ```
 
 > [!NOTE]
->  - Request Type: Advance State
->  - Contract Name: InputBox
->  - Contract Function: "addInput(address app, bytes calldata payload)"
->  - Contract Address: 0x59b22D57D4f067708AB0c00552767405926dc768
+>  - Tipo de Solicitação: Avançar Estado
+>  - Nome do Contrato: InputBox
+>  - Função do Contrato: "addInput(address app, bytes calldata payload)"
+>  - Endereço do Contrato: 0x59b22D57D4f067708AB0c00552767405926dc768
 
-#### Withdraw ERC20 tokens:
+#### Retirar tokens ERC20:
 
-_User story number 5_
+_História de usuário número 5_
 
-_Required past interactions: Send ERC20 tokens._
+_Interações anteriores necessárias: Enviar tokens ERC20._
 
-##### Step 1:
+##### Passo 1:
 
-###### Command:
+###### Comando:
 ```Bash
 cast calldata "withdrawERC20(address,uint256)" 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266 100ether
 ```
 
-###### Output Similar to:
+###### Saída similar a:
 ```Bash
 0xa1db9782000000000000000000000000f39Fd6e51aad88F6F4ce6aB8827279cffFb922660000000000000000000000000000000000000000000000056bc75e2d63100000
 ```
 
-##### Step 2:
+##### Passo 2:
 
-###### Command:
+###### Comando:
 ```Bash
 cartesi send generic --input=0xa1db9782000000000000000000000000f39Fd6e51aad88F6F4ce6aB8827279cffFb922660000000000000000000000000000000000000000000000056bc75e2d63100000
 ```
 
-###### Output Similar to:
+###### Saída similar a:
 ```Shell
 ? Chain Foundry
 ? RPC URL http://127.0.0.1:8545
@@ -454,14 +458,14 @@ cartesi send generic --input=0xa1db9782000000000000000000000000f39Fd6e51aad88F6F
 ✔ Input sent: 0x383138528e451dfb74286e8f84d6282e2718ecc92e66ad91e18f2059437de501
 ```
 
-##### Evidence:
+##### Evidência:
 
-###### Command:
+###### Comando:
 ```Bash
 curl http://localhost:8080/inspect/wallet/erc20/0x92C6bcA388E99d6B304f1Af3c3Cd749Ff0b591e2/0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
 ```
 
-###### Output Similar to:
+###### Saída similar a:
 ```json
 {
    "status":"Accepted",
@@ -476,11 +480,11 @@ curl http://localhost:8080/inspect/wallet/erc20/0x92C6bcA388E99d6B304f1Af3c3Cd74
 ```
 
 > [!NOTE]
->  - Request Type: Advance State
->  - Contract Name: InputBox
->  - Contract Function: "addInput(address app, bytes calldata payload)"
->  - Contract Address: 0x59b22D57D4f067708AB0c00552767405926dc768
+>  - Tipo de Solicitação: Avançar Estado
+>  - Nome do Contrato: InputBox
+>  - Função do Contrato: "addInput(address app, bytes calldata payload)"
+>  - Endereço do Contrato: 0x59b22D57D4f067708AB0c00552767405926dc768
 
-### Executing all generated vouchers
+### Executando todos os vouchers gerados
 
-You can use the [Cartesi Explorer](http://localhost:8080/explorer) to execute all the vouchers generated by the interactions performed earlier. Note that in this section, when clicking to obtain the proof, you are collecting the proof of the computation generated at the end of the respective epoch. This is the reason that, if you used the cartesi cli to run the dapp, you needed to use the ```--epoch-length``` flag to control the time until the epoch is completed, in this case, 60 seconds.
+Você pode usar o [Cartesi Explorer](http://localhost:8080/explorer) para executar todos os vouchers gerados pelas interações realizadas anteriormente. Note que nesta seção, ao clicar para obter a prova, você está coletando a prova da computação gerada ao final do respectivo epoch. Esta é a razão pela qual, se você usou o cli do Cartesi para executar o dapp, você precisou usar a flag ```--epoch-length``` para controlar o tempo até o epoch ser completado, neste caso, 60 segundos.
