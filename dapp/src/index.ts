@@ -13,7 +13,11 @@ const ROLLUP_SERVER = process.env.ROLLUP_HTTP_SERVER_URL || "http://127.0.0.1:50
 
 const app = createApp({ url: ROLLUP_SERVER });
 
+const contractDentination = "0x4c4d35E8bf193183c1E5D66397A475c3c78C4F9D";
+
 const abi = parseAbi([
+    "function addAnswer(address, uint256)",
+    "function sendBestScores()",
     "function withdrawEther(uint256)",
     "function safeMint(address,string)",
     "function transferEther(address,uint256)",
@@ -22,11 +26,54 @@ const abi = parseAbi([
     "function transferERC20(address,address,uint256)",
 ]);
 
+type WalletData = {
+    address: string;
+    score: number;
+};
+
+const userScores = [] as any;
+  
+
 app.addAdvanceHandler(async ({ payload, metadata }) => {
     try {
         const { functionName, args } = decodeFunctionData({ abi, data: payload });
-        let to, amount, token, uri, id, encodedData, bytecode, data;
+        let to, amount, token, uri, id, encodedData, data, userAddress: string, userScore;
         switch (functionName) {
+            case "addAnswer":
+                [userAddress, userScore] = args;
+                userScore = Number(userScore);
+
+                const walletIndex = userScores.findIndex( (wallet: WalletData) => wallet.address === userAddress);
+
+                if (walletIndex !== -1) {
+                    userScores[walletIndex].score += userScore;
+                    console.log('Atualização bem-sucedida:', userScores);
+                } else {
+                    userScores.push({ address: userAddress, score: userScore });
+                    console.error('Carteira não encontrada. Cruando nova carteira:', userScores);
+                }
+
+                userScores.sort((a: WalletData, b: WalletData) => b.score - a.score);
+
+                app.createNotice({
+                    payload: toHex(
+                        `Recieving score ${userScore} from ${userAddress} at ${metadata.timestamp}`
+                    ),
+                });
+                return "accept";
+            case "sendBestScores":
+                let addresses = toHex(JSON.stringify({first: userScores[0].address,second: userScores[1].address,third: userScores[2].address}));
+                
+                app.createVoucher({
+                    destination: contractDentination,
+                    payload: addresses,
+                });
+                app.createNotice({
+                    payload: toHex(
+                        `Sending best scores to contract at ${metadata.timestamp}`
+                    ),
+                });
+                return "accept";
             case "transferEther":
                 [to, amount] = args;
                 wallet.transferEther(metadata.msg_sender, to, amount);
@@ -115,6 +162,10 @@ const wallet = createWallet();
 app.addAdvanceHandler(wallet.handler);
 
 const router = createRouter({ app });
+
+router.add("quiz/leaderboard", () => {
+    return JSON.stringify(Object.entries(userScores));
+});
 
 router.add<{ sender: string }>(
     "wallet/ether/:sender",
