@@ -8,6 +8,7 @@ import { serveStatic } from 'frog/serve-static'
 import { pinata } from 'frog/hubs'
 import { neynar } from 'frog/middlewares'
 import { getDisplayName } from 'next/dist/shared/lib/utils'
+import { mockArtistList } from '@/app/utils/mockData'
 
 const app = new Frog({
   // browserLocation: '/',
@@ -21,6 +22,10 @@ const app = new Frog({
     features: ['interactor', 'cast'],
   }),
 )
+
+const findArtist = (name: string) => {
+  return mockArtistList.artists.find((artist) => artist.name === name)
+};
 
 app.frame('/', (c) => {
   const { inputText, status } = c
@@ -135,19 +140,6 @@ app.frame('/like', (c) => {
     intents: [
       <TextInput //if we dont have the input artist on our site, move for an error frame
       placeholder="Enter your favourite artist"></TextInput>,
-      <Button
-       action="/yes"
-       value="Michael Jackson"
-      >
-        Michael Jackson
-      </Button>,
-      <Button
-       action="/no"
-       value="Madonna"
-      >
-        Madonna
-      </Button>,
-      status === 'response' && <Button.Reset>Reset</Button.Reset>,
     ],
   })
 })
