@@ -11,6 +11,7 @@ import { getDisplayName } from 'next/dist/shared/lib/utils'
 import { mockArtistList } from '@/app/utils/mockData'
 import { abi } from './abi.js'
 import { mock } from 'node:test'
+import { Address } from 'viem'
 
 const app = new Frog({
   // browserLocation: '/',
@@ -325,7 +326,7 @@ app.frame('/textAnswer', (c) => {
   const { buttonValue, inputText } = c;
   const correctAnswer = buttonValue;
   const answer = inputText;
-
+  const address = c.frameData?.address;
   if (answer === correctAnswer) {
     return c.res({
       image: (
@@ -360,6 +361,7 @@ app.frame('/textAnswer', (c) => {
         </div>
       ),
       intents: [
+        <Button.Transaction target={`/scored/${address}/1`}>Submit</Button.Transaction>,
         <Button>Claim</Button>
       ]
     });
@@ -396,11 +398,15 @@ app.frame('/textAnswer', (c) => {
         </div>
       </div>
     ),
+    intents: [
+      <Button.Transaction target={`/scored/${address}/0`}>Submit</Button.Transaction>
+    ]
   });
 });
 
 app.frame('/choiceAnswer', (c) => {
-  const { buttonValue } = c;
+  const { buttonValue, frameData } = c;
+  const address = c.frameData?.address;
   if (buttonValue === 'correct') {
     return c.res({
       image: (
@@ -435,6 +441,7 @@ app.frame('/choiceAnswer', (c) => {
         </div>
       ),
       intents: [
+        <Button.Transaction target={'/scored/${address}/1'}>Submit</Button.Transaction>,
         <Button>Claim</Button>
       ]
     });
@@ -471,6 +478,9 @@ app.frame('/choiceAnswer', (c) => {
         </div>
       </div>
     ),
+    intents: [
+      <Button.Transaction target={'/not_scored/${address}/0'}>Submit</Button.Transaction>
+    ]
   });
 });
 
@@ -525,15 +535,32 @@ app.frame('/choiceAnswer', (c) => {
 //   return c.send({/* */})
 // })
 
+app.transaction(
+  '/scored/:address/:value',
+  (c) => {
+    const value = Number(c.req.param('value'))
+    const address = c.req.param('address') as `0x${string}`;
+    return c.contract({
+      abi,
+      //chainId: 'eip155:11155111',
+      chainId: 'eip155:11155111',
+      functionName: 'addAnswer',
+      to: '0xab7528bb862fb57e8a2bcd567a2e929a0be56a5e',
+      args: [address, value],
+    })
+  }
+) 
+
 // app.transaction(
-//   '/mint',
+//   '/not_scored',
 //   (c) => {
+//     const address = c.address as Address
 //     return c.contract({
 //       abi,
-//       chainId: 'eip155:84532',
+//       chainId: 'eip155:31337',
 //       functionName: 'addAnswer',
 //       to: '0xab7528bb862fb57e8a2bcd567a2e929a0be56a5e',
-//       args = [fid, score],
+//       args = [address, 0],
 //     })
 //   }
 // ) 
