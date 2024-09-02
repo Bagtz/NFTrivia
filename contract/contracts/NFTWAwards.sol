@@ -29,12 +29,9 @@ contract NFTAwards is ERC1155, ERC1155Burnable{
     }
 
     function Award (
-        address[] calldata recipients
+        address recipients
     ) external {
         require(msg.sender == Owner, "Only DApp can Award winners");
-        for (uint i = 0; i < recipients.length; i++) 
-        {
-            _mint(recipients[i], i, 1, "");
-        }
+        _mint(recipients, 0, 1, "");
     }
 }

@@ -8,12 +8,13 @@ import {
     Address,
     toHex,
 } from "viem";
+import contractAbi from "./Abi.json";
 
 const ROLLUP_SERVER = process.env.ROLLUP_HTTP_SERVER_URL || "http://127.0.0.1:5004";
 
 const app = createApp({ url: ROLLUP_SERVER });
 
-const contractDentination = "0x4c4d35E8bf193183c1E5D66397A475c3c78C4F9D";
+const contractDestination = "0x36C02dA8a0983159322a80FFE9F24b1acfF8B570";
 
 const abi = parseAbi([
     "function addAnswer(address, uint256)",
@@ -47,13 +48,14 @@ app.addAdvanceHandler(async ({ payload, metadata }) => {
 
                 if (walletIndex !== -1) {
                     userScores[walletIndex].score += userScore;
-                    console.log('Atualização bem-sucedida:', userScores);
+                    console.log('Atualização bem-sucedida:');
                 } else {
                     userScores.push({ address: userAddress, score: userScore });
-                    console.error('Carteira não encontrada. Cruando nova carteira:', userScores);
+                    console.log('Carteira não registrada. Criando nova carteira:');
                 }
 
                 userScores.sort((a: WalletData, b: WalletData) => b.score - a.score);
+                console.log(userScores);
 
                 app.createNotice({
                     payload: toHex(
@@ -62,15 +64,20 @@ app.addAdvanceHandler(async ({ payload, metadata }) => {
                 });
                 return "accept";
             case "sendBestScores":
-                let addresses = toHex(JSON.stringify({first: userScores[0].address,second: userScores[1].address,third: userScores[2].address}));
+                encodedData = encodeFunctionData({
+                    abi: contractAbi,
+                    functionName: "Award",
+                    args: [userScores[0].address],
+                })
                 
                 app.createVoucher({
-                    destination: contractDentination,
-                    payload: addresses,
+                    destination: contractDestination,
+                    payload: encodedData,
                 });
+                
                 app.createNotice({
                     payload: toHex(
-                        `Sending best scores to contract at ${metadata.timestamp}`
+                        'Sending best scores to contract at ${metadata.timestamp}'
                     ),
                 });
                 return "accept";
@@ -166,6 +173,15 @@ const router = createRouter({ app });
 router.add("quiz/leaderboard", () => {
     return JSON.stringify(Object.entries(userScores));
 });
+
+router.add<{ sender: string }>(
+    "wallet/nft/:sender",
+    ({ params: { sender } }) => {
+        return JSON.stringify({
+            balance: `${wallet.etherBalanceOf(sender).toString()} wei`,
+        });
+    }
+);
 
 router.add<{ sender: string }>(
     "wallet/ether/:sender",
