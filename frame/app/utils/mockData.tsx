@@ -82,7 +82,7 @@ export const mockArtistList: ArtistList = {
     },
     {
         id: 3,
-        name: 'Nome do Artista 3',
+        name: 'a',
         biography: 'Breve biografia do artista 3.',
         choiceQuestions: [
             {

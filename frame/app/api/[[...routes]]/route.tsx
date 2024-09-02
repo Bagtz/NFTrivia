@@ -9,6 +9,7 @@ import { pinata } from 'frog/hubs'
 import { neynar } from 'frog/middlewares'
 import { getDisplayName } from 'next/dist/shared/lib/utils'
 import { mockArtistList } from '@/app/utils/mockData'
+import { abi } from './abi.js'
 
 const app = new Frog({
   // browserLocation: '/',
@@ -84,15 +85,8 @@ app.frame('/', (c) => {
 })
 
 app.frame('/like', (c) => {
-  const { buttonValue, inputText, status, frameData, verified } = c
-  const artist = inputText || buttonValue
-
-  console.log('verified', verified)
-  console.log('frameData', frameData)
-
-  const { fid } = frameData || {}
-
-  const { displayName, pfpUrl } = c.var.interactor || {}
+  const { inputText, status } = c
+  const artist = inputText || ' asdasds'
 
   // const { displayName, followerCount, pfpUrl } = c.var.interactor || {}
 
@@ -129,26 +123,26 @@ app.frame('/like', (c) => {
             whiteSpace: 'pre-wrap',
           }}
         >
-           {status === 'response'
+           {status === 'response'   
             ? `Choose your favourite artist?` 
             : ''} 
         </div>
       </div>
     ),
+    action:'/artist',
     intents: [
       <TextInput //if we dont have the input artist on our site, move for an error frame
       placeholder="Enter your favourite artist"></TextInput>,
-      <Button action='/artist'>Submit</Button>,
+      <Button action='/artist' value={artist}>Submit</Button>,
     ],
   })
 })
 
 app.frame('/artist', (c) => {
-  const { inputText } = c
-  const artist = inputText || ''
-
-  const artistData = findArtist(artist)
-  if (!artistData) {
+  const {buttonValue} = c
+  //const artistData = findArtist{artist} || mockArtistList.artists[0]
+  const artistData = mockArtistList.artists[0]
+  if (artistData == undefined || artistData == null) {
     return c.res({
       image: (
         <div
@@ -185,23 +179,22 @@ app.frame('/artist', (c) => {
         <Button.Reset>Reset</Button.Reset>,
       ],
     })
-  }
-
-  return c.res({
+  }else{
+    return c.res({
     image: (
       <div
-        style={{
-          alignItems: 'center',
-          background: 'black',
-          backgroundSize: '100% 100%',
-          display: 'flex',
-          flexDirection: 'column',
-          flexWrap: 'nowrap',
-          height: '100%',
-          justifyContent: 'center',
-          textAlign: 'center',
-          width: '100%',
-        }}
+      style={{
+        alignItems: 'center',
+        background: 'black',
+        backgroundSize: '100% 100%',
+        display: 'flex',
+        flexDirection: 'column',
+        flexWrap: 'nowrap',
+        height: '100%',
+        justifyContent: 'center',
+        textAlign: 'center',
+        width: '100%',
+      }}
       >
         <div
           style={{
@@ -214,15 +207,16 @@ app.frame('/artist', (c) => {
             padding: '0 120px',
             whiteSpace: 'pre-wrap',
           }}
-        >
-          Let's start the quiz about {artistData.name}?
+          >
+          Let's start the quiz!
         </div>
       </div>
     ),
     intents: [
-      <Button action="/question" value={artistData.name}>Start</Button>
+      <Button action="/question">Start</Button>
     ]
   })
+  }
 })
 
 app.frame('/question', (c) => {
@@ -524,6 +518,19 @@ app.frame('/choiceAnswer', (c) => {
 //   const { inputText } = c
 //   return c.send({/* */})
 // })
+
+// app.transaction(
+//   '/mint',
+//   (c) => {
+//     return c.contract({
+//       abi,
+//       chainId: 'eip155:84532',
+//       functionName: 'addAnswer',
+//       to: '0xab7528bb862fb57e8a2bcd567a2e929a0be56a5e',
+//       args = [fid, score],
+//     })
+//   }
+// ) 
 
 devtools(app, { serveStatic })
 
