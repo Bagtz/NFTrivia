@@ -10,6 +10,7 @@ import { neynar } from 'frog/middlewares'
 import { getDisplayName } from 'next/dist/shared/lib/utils'
 import { mockArtistList } from '@/app/utils/mockData'
 import { abi } from './abi.js'
+import { mock } from 'node:test'
 
 const app = new Frog({
   // browserLocation: '/',
@@ -25,7 +26,8 @@ const app = new Frog({
 )
 
 const findArtist = (name: string) => {
-  return mockArtistList.artists.find((artist) => artist.name === name)
+  console.log(name)
+  return mockArtistList.artists.find((artist) => artist.name.toLocaleLowerCase() === name.toLowerCase())
 };
 
 const getRandomQuestion = (max: number) => {
@@ -86,7 +88,7 @@ app.frame('/', (c) => {
 
 app.frame('/like', (c) => {
   const { inputText, status } = c
-  const artist = inputText || ' asdasds'
+  const artist = inputText
 
   // const { displayName, followerCount, pfpUrl } = c.var.interactor || {}
 
@@ -133,15 +135,16 @@ app.frame('/like', (c) => {
     intents: [
       <TextInput //if we dont have the input artist on our site, move for an error frame
       placeholder="Enter your favourite artist"></TextInput>,
-      <Button action='/artist' value={artist}>Submit</Button>,
+      <Button action='/artist'>Submit</Button>,
     ],
   })
 })
 
 app.frame('/artist', (c) => {
-  const {buttonValue} = c
+  const { inputText } = c
+
   //const artistData = findArtist{artist} || mockArtistList.artists[0]
-  const artistData = mockArtistList.artists[0]
+  const artistData = findArtist(inputText as string)
   if (artistData == undefined || artistData == null) {
     return c.res({
       image: (
@@ -213,7 +216,7 @@ app.frame('/artist', (c) => {
       </div>
     ),
     intents: [
-      <Button action="/question">Start</Button>
+      <Button action="/question" value={artistData.name}>Start</Button>
     ]
   })
   }
@@ -221,8 +224,11 @@ app.frame('/artist', (c) => {
 
 app.frame('/question', (c) => {
   const { buttonValue } = c
-  const name = buttonValue || ''
-  const artistData = findArtist(name) || mockArtistList.artists[0]
+  const name = buttonValue
+  let artistData = findArtist(name as string)
+  if (!artistData) {
+    artistData = mockArtistList.artists[0]
+  }
   const randomType = getRandomQuestion(2)
   if (randomType == 0) {
     const randomQuestion = getRandomQuestion(artistData.textQuestions.length)
