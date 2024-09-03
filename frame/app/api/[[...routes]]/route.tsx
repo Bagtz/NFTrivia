@@ -12,6 +12,7 @@ import { mockArtistList } from '@/app/utils/mockData'
 import { abi } from './abi.js'
 import { mock } from 'node:test'
 import { Address } from 'viem'
+import { getFarcasterUserInfo } from '../../utils/neynar'
 
 const app = new Frog({
   // browserLocation: '/',
@@ -44,21 +45,18 @@ app.frame('/', (c) => {
   return c.res({
     image: (
       <div
-        style={{
-          alignItems: 'center',
-          background:
-            status === 'response'
-              ? 'linear-gradient(to right, #432889, #17101F)'
-              : 'black',
-          backgroundSize: '100% 100%',
-          display: 'flex',
-          flexDirection: 'column',
-          flexWrap: 'nowrap',
-          height: '100%',
-          justifyContent: 'center',
-          textAlign: 'center',
-          width: '100%',
-        }}
+      style={{
+        alignItems: 'center',
+        background: 'black',
+        backgroundSize: '100% 100%',
+        display: 'flex',
+        flexDirection: 'column',
+        flexWrap: 'nowrap',
+        height: '100%',
+        justifyContent: 'center',
+        textAlign: 'center',
+        width: '100%',
+      }}
       >
         <div
           style={{
@@ -72,7 +70,7 @@ app.frame('/', (c) => {
             whiteSpace: 'pre-wrap',
           }}
         >
-          Let's start?
+          Welcome to NFTrivia. Let start your quiz?
         </div>
       </div>
     ),
@@ -98,21 +96,18 @@ app.frame('/like', (c) => {
   return c.res({
     image: (
       <div
-        style={{
-          alignItems: 'center',
-          background:
-            status === 'response'
-              ? 'linear-gradient(to right, #432889, #17101F)'
-              : 'black',
-          backgroundSize: '100% 100%',
-          display: 'flex',
-          flexDirection: 'column',
-          flexWrap: 'nowrap',
-          height: '100%',
-          justifyContent: 'center',
-          textAlign: 'center',
-          width: '100%',
-        }}
+      style={{
+        alignItems: 'center',
+        background: 'black',
+        backgroundSize: '100% 100%',
+        display: 'flex',
+        flexDirection: 'column',
+        flexWrap: 'nowrap',
+        height: '100%',
+        justifyContent: 'center',
+        textAlign: 'center',
+        width: '100%',
+      }}
       >
         <div
           style={{
@@ -327,7 +322,7 @@ app.frame('/textAnswer', (c) => {
   const correctAnswer = buttonValue;
   const answer = inputText;
   const address = c.frameData?.address;
-  if (answer === correctAnswer) {
+  if ((answer as string).toLowerCase() === (correctAnswer as string).toLowerCase()) {
     return c.res({
       image: (
         <div
@@ -356,13 +351,12 @@ app.frame('/textAnswer', (c) => {
               whiteSpace: 'pre-wrap',
             }}
           >
-            Correct! Claim your NFT above!
+            Correct! Claim your points above.
           </div>
         </div>
       ),
       intents: [
-        <Button.Transaction target={`/scored/${address}/1`}>Submit</Button.Transaction>,
-        <Button>Claim</Button>
+        <Button action={`/scored/${address}/1`}>Validate attempt</Button>,
       ]
     });
   }
@@ -399,14 +393,15 @@ app.frame('/textAnswer', (c) => {
       </div>
     ),
     intents: [
-      <Button.Transaction target={`/scored/${address}/0`}>Submit</Button.Transaction>
+      <Button action={`/scored/${address}/0`}>Validate attempt</Button>
     ]
   });
 });
 
-app.frame('/choiceAnswer', (c) => {
+app.frame('/choiceAnswer',  async(c) => {
   const { buttonValue, frameData } = c;
-  const address = c.frameData?.address;
+  const verified = await getFarcasterUserInfo(1);
+  const address = verified.verifiedAddresses[0];
   if (buttonValue === 'correct') {
     return c.res({
       image: (
@@ -436,13 +431,12 @@ app.frame('/choiceAnswer', (c) => {
               whiteSpace: 'pre-wrap',
             }}
           >
-            Correct! Claim your NFT above!
+            Correct! Claim your points above!
           </div>
         </div>
       ),
       intents: [
-        <Button.Transaction target={'/scored/${address}/1'}>Submit</Button.Transaction>,
-        <Button>Claim</Button>
+        <Button action={`/scored/${address}/1`}>Validate attempt</Button>,
       ]
     });
   }
@@ -479,91 +473,61 @@ app.frame('/choiceAnswer', (c) => {
       </div>
     ),
     intents: [
-      <Button.Transaction target={'/not_scored/${address}/0'}>Submit</Button.Transaction>
+      <Button action={`/scored/${address}/0`}>Validate attempt</Button>
     ]
   });
 });
 
-// app.frame('/neynar', (c) => {
-// const { displayName, followerCount, pfpUrl } = c.var.interactor || {} 
-// console.log('cast: ', c.var.cast)
-// console.log('interactor: ', c.var.interactor)
-// return c.res({
-// image: (
-// <div
-// style={{
-//   alignItems: 'center',
-//   color: 'black',
-//   display: 'flex',
-//   justifyContent: 'center',
-//   fontSize: 48,
-//   height: '100%',
-//   width: '100%',
-// }}
-// >
-// Greetings {displayName}, you have {followerCount} followers.
-// {/* <img
-//  style={{
-//   width: 200,
-//   height: 200,
-//  }}
-//  src={pfpUrl}
-//  /> */}
-// </div>
-// ),
-// })
-// })
-
-// app.frame('/no', (c) => {
-//   return c.res({
-//     image: (
-//       <div style={{color: 'black', display: 'flex', fontSize:60 }}>
-//         perform a transaction
-//       </div>
-//     ),
-//     intents: [
-//       <TextInput placeholder="Value (ETH)" />,
-//       <Button.Transaction target='Value'>Mint</Button.Transaction>,
-//     ]
-//   })
-// })
-
-// app.transaction('/send-ether', (c) => {
-//   const { address } = c
-//   const { initialPath } = c
-//   const { inputText } = c
-//   return c.send({/* */})
-// })
-
-app.transaction(
+app.frame(
   '/scored/:address/:value',
-  (c) => {
+  async (c) => {
     const value = Number(c.req.param('value'))
     const address = c.req.param('address') as `0x${string}`;
-    return c.contract({
-      abi,
-      //chainId: 'eip155:11155111',
-      chainId: 'eip155:11155111',
-      functionName: 'addAnswer',
-      to: '0xab7528bb862fb57e8a2bcd567a2e929a0be56a5e',
-      args: [address, value],
+
+    const response = await fetch('http://localhost:3002/api/add-answer', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ userAddress: address, userScore: value })
+    })
+
+    console.log(response)
+    return c.res({
+      image: (
+        <div
+          style={{
+            alignItems: 'center',
+            background: 'black',
+            backgroundSize: '100% 100%',
+            display: 'flex',
+            flexDirection: 'column',
+            flexWrap: 'nowrap',
+            height: '100%',
+            justifyContent: 'center',
+            textAlign: 'center',
+            width: '100%',
+          }}
+        >
+          <div
+            style={{
+              color: 'white',
+              fontSize: 60,
+              fontStyle: 'normal',
+              letterSpacing: '-0.025em',
+              lineHeight: 1.4,
+              marginTop: 30,
+              padding: '0 120px',
+              whiteSpace: 'pre-wrap',
+            }}
+          >
+            Come back tomorrow!
+          </div>
+        </div>
+      ),
     })
   }
-) 
-
-// app.transaction(
-//   '/not_scored',
-//   (c) => {
-//     const address = c.address as Address
-//     return c.contract({
-//       abi,
-//       chainId: 'eip155:31337',
-//       functionName: 'addAnswer',
-//       to: '0xab7528bb862fb57e8a2bcd567a2e929a0be56a5e',
-//       args = [address, 0],
-//     })
-//   }
-// ) 
+)
 
 devtools(app, { serveStatic })
 
