@@ -53,3 +53,6 @@ Finally, we can run the backend:
 cd backend/
 node index.js
 ```
+
+## Usage demo
+[NFTrivia Demo](https://drive.google.com/drive/folders/16RIFc13d1s0pCfSSfdb89fLavsVd7XwS)
