@@ -4,65 +4,63 @@ export const mockArtistList: ArtistList = {
   artists: [
     {
         id: 1,
-        name: 'Nome do Artista',
-        biography: 'Breve biografia do artista.',
+        name: 'Alok',
         choiceQuestions: [
             {
                 id: 1,
-                text: 'Qual foi o primeiro álbum lançado pelo artista?',
+                text: 'Where is Alok from?',
                 options: [
-                { id: 1, text: 'Álbum A' },
-                { id: 2, text: 'Álbum B' },
-                { id: 3, text: 'Álbum C' },
+                { id: 1, text: 'Cansas - United States' },
+                { id: 2, text: 'Rio de Janeiro - Brazil' },
+                { id: 3, text: 'Goiás - Brazil' },
                 ],
-                correctOptionId: 1,
+                correctOptionId: 3
             },
             {
                 id: 2,
-                text: 'Qual é o estilo musical predominante do artista?',
+                text: 'What is Alok\'s predominant musical style?',
                 options: [
-                { id: 1, text: 'Rock' },
-                { id: 2, text: 'Pop' },
-                { id: 3, text: 'Jazz' },
+                { id: 1, text: 'Eletronic' },
+                { id: 2, text: 'Zumba' },
+                { id: 3, text: 'Rock' },
                 ],
-                correctOptionId: 2,
+                correctOptionId: 1,
             }
         ],
         textQuestions: [
             {
                 id: 1,
-                text: 'Qual é o nome do primeiro álbum lançado pelo artista?',
-                correctAnswer: 'Álbum A',
+                text: 'What is Alok\s first name?',
+                correctAnswer: 'Alok',
             },
             {
                 id: 2,
-                text: 'Qual é o estilo musical predominante do artista?',
-                correctAnswer: 'Pop',
+                text: 'How many childs Alok has?',
+                correctAnswer: '1',
             }
         ]
     },
     {
         id: 2,
-        name: 'Nome do Artista 2',
-        biography: 'Breve biografia do artista 2.',
+        name: 'Taylor SWift',
         choiceQuestions: [
             {
                 id: 1,
-                text: 'Qual foi o primeiro álbum lançado pelo artista 2?',
+                text: 'How old is Taylor Swift?',
                 options: [
-                { id: 1, text: 'Álbum A' },
-                { id: 2, text: 'Álbum B' },
-                { id: 3, text: 'Álbum C' },
+                { id: 1, text: '29' },
+                { id: 2, text: '34' },
+                { id: 3, text: '32' },
                 ],
                 correctOptionId: 2,
             },
             {
                 id: 2,
-                text: 'Qual é o estilo musical predominante do artista 2?',
+                text: 'What is Taylor Swift most famous music?',
                 options: [
-                { id: 1, text: 'Rock' },
-                { id: 2, text: 'Pop' },
-                { id: 3, text: 'Jazz' },
+                { id: 1, text: 'I don\t Wanna Live Forever' },
+                { id: 2, text: 'Shake it Off' },
+                { id: 3, text: 'Style' },
                 ],
                 correctOptionId: 1,
             }
@@ -70,52 +68,13 @@ export const mockArtistList: ArtistList = {
         textQuestions: [
             {
                 id: 1,
-                text: 'Qual é o nome do primeiro álbum lançado pelo artista 2?',
-                correctAnswer: 'Álbum B',
+                text: 'What is Taylor Swift first album name?',
+                correctAnswer: 'Taylor Swift',
             },
             {
                 id: 2,
-                text: 'Qual é o estilo musical predominante do artista 2?',
-                correctAnswer: 'Rock',
-            }
-        ]
-    },
-    {
-        id: 3,
-        name: 'a',
-        biography: 'Breve biografia do artista 3.',
-        choiceQuestions: [
-            {
-                id: 1,
-                text: 'Qual foi o primeiro álbum lançado pelo artista 3?',
-                options: [
-                { id: 1, text: 'Álbum A' },
-                { id: 2, text: 'Álbum B' },
-                { id: 3, text: 'Álbum C' },
-                ],
-                correctOptionId: 3,
-            },
-            {
-                id: 2,
-                text: 'Qual é o estilo musical predominante do artista 3?',
-                options: [
-                { id: 1, text: 'Rock' },
-                { id: 2, text: 'Pop' },
-                { id: 3, text: 'Jazz' },
-                ],
-                correctOptionId: 3,
-            }
-        ],
-        textQuestions: [
-            {
-                id: 1,
-                text: 'Qual é o nome do primeiro álbum lançado pelo artista 3?',
-                correctAnswer: 'Álbum C',
-            },
-            {
-                id: 2,
-                text: 'Qual é o estilo musical predominante do artista 3?',
-                correctAnswer: 'Jazz',
+                text: 'What is Taylor Swift music style?',
+                correctAnswer: 'Pop',
             }
         ]
     },
