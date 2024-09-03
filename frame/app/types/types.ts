@@ -19,7 +19,6 @@ export interface Option {
   export interface Artist {
     id: number;
     name: string;
-    biography: string;
     choiceQuestions: ChoiceQuestion[];
     textQuestions: TextQuestion[];
   }
