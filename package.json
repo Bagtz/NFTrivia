@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "@deroll/app": "^0.7.1",
+    "@deroll/router": "^0.5.1",
+    "@deroll/wallet": "^0.8.1",
+    "nonodo": "^1.2.0",
+    "pg": "^8.12.0",
+    "view": "^1.1.1"
+  }
+}
