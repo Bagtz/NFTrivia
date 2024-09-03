@@ -13,7 +13,6 @@
     "noUnusedParameters": false,
     "outDir": "dist",
     "preserveWatchOutput": true,
-    "resolveJsonModule": true,
     "skipLibCheck": true,
     "strict": true,
     "target": "ES2022"

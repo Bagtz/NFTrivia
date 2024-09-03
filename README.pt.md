@@ -132,8 +132,6 @@ _Interações anteriores necessárias: Enviar tokens nativos._
 ###### Comando:
 ```Bash
 cast calldata "transferEther(address,uint256)" 0x70997970C51812dc3A010C7d01b50e0d17dc79C8 100ether
-cast calldata "addAnswer(address, uint256)" 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266 27
-cast calldata "function sendBestScores()"
 ```
 
 ###### Saída similar a:

@@ -132,7 +132,6 @@ _Required past interactions: Send native tokens._
 ###### Command:
 ```Bash
 cast calldata "transferEther(address,uint256)" 0x70997970C51812dc3A010C7d01b50e0d17dc79C8 100ether
-cast calldata "transferEther(address,uint256)" 0x70997970C51812dc3A010C7d01b50e0d17dc79C8 100ether
 ```
 
 ###### Output Similar to:
